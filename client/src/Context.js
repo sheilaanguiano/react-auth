@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Data from './Data';
 
 const Context = React.createContext(); 
 
@@ -6,18 +7,29 @@ export class Provider extends Component {
 
   constructor() {
     super();
+    // Initialize a new instance of the Data
+    this.data = new Data();
   }
 
   render() {
+    const value = {
+      data: this.data,
+      actions: {
+        signIn: this.signIn
+      }
+    }
+
     return (
-      <Context.Provider>
+      <Context.Provider value={ value }>
         {this.props.children}
       </Context.Provider>  
     );
   }
 
   
-  signIn = async () => {
+  signIn = async (username, password) => {
+    const user = await this.data.getUser(username, password);
+    return user;
 
   }
 
